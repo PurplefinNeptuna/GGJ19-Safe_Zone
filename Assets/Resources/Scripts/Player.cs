@@ -1,15 +1,23 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class Player : PhysicsObject {
 
 	public float maxSpeed = 6f;
-	public float jumpTakeOffSpd = 12f;
+	public float jumpTakeOffSpd = 13f;
 	public float knockBackXSpeed = .5f;
 	public float knockBackYSpeed = 4f;
-	public float knockBackMultiplier = 1f;
-	public float knockBackCooldownMax = 2f;
-	public float knockBackCooldown = 0f;
+	public float knockBackResistance = 1f;
 	public float knockBackDirection = 1f;
+	public float invincibleTimeMax = 1.5f;
+	private float invincibleTime = 0f;
+	public bool invincible = false;
+	private bool blinking = false;
+	public float blinkRateMax = .2f;
+	private float blinkRate;
+	public int maxHealth = 100;
+	public int health = 100;
 
 	public bool jumpBack = false;
 	private bool inJumpBack = false;
@@ -21,11 +29,19 @@ public class Player : PhysicsObject {
 	}
 
 	private void Update() {
-		if (knockBackCooldown > 0f) {
-			knockBackCooldown -= Time.deltaTime;
+		if (health <= 0) {
+			health = 0;
+			Dead();
+		}
+
+		if (invincibleTime > 0f) {
+			invincibleTime -= Time.deltaTime;
 		}
 		else {
-			knockBackCooldown = 0f;
+			invincibleTime = 0f;
+			invincible = false;
+			blinking = false;
+			spriteRenderer.color = Color.white;
 		}
 
 		float xMove = 0f;
@@ -41,7 +57,7 @@ public class Player : PhysicsObject {
 		if (!inJumpBack || grounded)
 			xMove = Input.GetAxis("Horizontal");
 		else
-			xMove = knockBackXSpeed * knockBackMultiplier * knockBackDirection;
+			xMove = knockBackXSpeed * knockBackResistance * knockBackDirection;
 
 		if (Input.GetButtonDown("Jump") && grounded) {
 			velocity.y = jumpTakeOffSpd;
@@ -52,23 +68,47 @@ public class Player : PhysicsObject {
 			}
 		}
 
-		if (Input.GetButtonDown("Fire2") && !jumpBack) {
-			Knockback(spriteRenderer.flipX ? Vector2.right : Vector2.left);
-		}
-
 		bool flipSprite = (spriteRenderer.flipX ? (xMove > 0.01f) : (xMove < -0.01f));
 		if (flipSprite && !inJumpBack)
 			spriteRenderer.flipX = !spriteRenderer.flipX;
 
 		velocity.x = xMove * maxSpeed;
+
+		if (blinking) {
+			if (blinkRate > blinkRateMax / 2f) {
+				spriteRenderer.color = new Color(1, 1, 1, .5f);
+			}
+			else {
+				spriteRenderer.color = Color.white;
+			}
+			blinkRate -= Time.deltaTime;
+			if (blinkRate <= 0) {
+				blinkRate = blinkRateMax;
+			}
+		}
 	}
 
-	public void Knockback(Vector2 direction, int attackMultiplier = 1) {
-		if (knockBackCooldown == 0f) {
-			knockBackDirection = Mathf.Sign(direction.x);
-			jumpBack = true;
-			velocity.y += knockBackYSpeed * knockBackMultiplier * attackMultiplier;
-			knockBackCooldown = knockBackCooldownMax;
+	public void Knockback(Vector2 direction, float attackMultiplier = 1f) {
+		knockBackDirection = Mathf.Sign(direction.x);
+		jumpBack = true;
+		velocity.y = knockBackYSpeed * knockBackResistance * attackMultiplier;
+	}
+
+	public void GetHit(Vector2 direction, int damage, bool ignoreInvincible = false, float knockbackMultiplier = 1f) {
+		if (!invincible || ignoreInvincible) {
+			health -= damage;
+			if (health < 0)
+				health = 0;
+			invincible = true;
+			invincibleTime = invincibleTimeMax;
+			blinking = true;
+			blinkRate = blinkRateMax;
+			Knockback(direction, knockbackMultiplier);
 		}
+	}
+
+	public void Dead() {
+		GameScript.main.GameOver();
+		Destroy(gameObject);
 	}
 }

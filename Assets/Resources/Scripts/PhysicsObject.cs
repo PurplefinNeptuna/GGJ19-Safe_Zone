@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PhysicsObject : MonoBehaviour {
@@ -36,8 +37,10 @@ public class PhysicsObject : MonoBehaviour {
 
 		Vector2 deltaPos = velocity * Time.fixedDeltaTime;
 
-		if (!(affectedByGravity || grounded))
+		if (!grounded) {
 			groundNormal = Vector2.up;
+			currentNormal = Vector2.up;
+		}
 		Vector2 moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
 		grounded = false;
 
@@ -68,7 +71,6 @@ public class PhysicsObject : MonoBehaviour {
 					grounded = true;
 					if (yMovement) {
 						groundNormal = currentNormal;
-						//currentNormal.x = 0;
 					}
 				}
 
