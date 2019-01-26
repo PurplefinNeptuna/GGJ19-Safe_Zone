@@ -25,6 +25,23 @@ public class Player : PhysicsObject {
 
 	private SpriteRenderer spriteRenderer;
 
+	public float gunDistance = .6f;
+	public Vector2 GunPoint {
+		get {
+			return (spriteRenderer.flipX ? Vector2.left : Vector2.right) * gunDistance;
+		}
+	}
+	public Vector2 GunDirection {
+		get {
+			return spriteRenderer.flipX ? Vector2.left : Vector2.right;
+		}
+	}
+	public int gunDamage = 5;
+	public bool gunFired = false;
+	public float gunBulletSpeed = 15f;
+	public int gunAmmoMax = 3;
+	public int gunAmmo = 0;
+
 	private void Awake() {
 		spriteRenderer = GetComponent<SpriteRenderer>();
 	}
@@ -67,6 +84,15 @@ public class Player : PhysicsObject {
 			if (velocity.y > 0) {
 				velocity.y *= .5f;
 			}
+		}
+
+		if (Input.GetButtonDown("Fire1") && !gunFired && gunAmmo < gunAmmoMax) {
+			gunFired = true;
+			ProjectileManager.Spawn(rb2d.position + GunPoint, gunBulletSpeed, GunDirection, true, gameObject, gunDamage, "Bullet", "PlayerBullet");
+			gunAmmo++;
+		}
+		else if (Input.GetButtonUp("Fire1") && gunFired) {
+			gunFired = false;
 		}
 
 		bool flipSprite = (spriteRenderer.flipX ? (xMove > 0.01f) : (xMove < -0.01f));

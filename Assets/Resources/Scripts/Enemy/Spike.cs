@@ -8,5 +8,6 @@ public class Spike : Enemy {
 		velocity = Vector2.zero;
 		attackPower = 2f;
 		damage = 15;
+		immortal = true;
 	}
 }

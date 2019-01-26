@@ -14,7 +14,6 @@ public class GameScript : MonoBehaviour {
 	public bool dead = false;
 	public GameObject VCamPlayer;
 	public GameObject room;
-	public Bounds roomBound;
 	public ContactFilter2D playerContact;
 	public Grid grid;
 	public Dictionary<Vector3Int, WorldTile> tiles;
@@ -24,6 +23,9 @@ public class GameScript : MonoBehaviour {
 	public GameObject gameOverPanel;
 	public GameObject winPanel;
 	public float lastY = -5.5f;
+	public LayerMask playerLayer;
+	public LayerMask enemyLayer;
+	public LayerMask groundLayer;
 
 	private void Awake() {
 		if (main == null) {
@@ -32,13 +34,15 @@ public class GameScript : MonoBehaviour {
 		else if (main != this) {
 			Destroy(gameObject);
 		}
-
 	}
 
 	private void Start() {
 		LoadRoom();
+		playerLayer = LayerMask.GetMask("Player");
+		enemyLayer = LayerMask.GetMask("Enemy");
+		groundLayer = LayerMask.GetMask("Ground");
 		playerContact.useTriggers = false;
-		playerContact.SetLayerMask(LayerMask.GetMask("Player"));
+		playerContact.SetLayerMask(playerLayer);
 	}
 
 	private void Update() {
@@ -56,7 +60,6 @@ public class GameScript : MonoBehaviour {
 		}
 
 		grid = room.GetComponentInChildren<Grid>();
-		roomBound = room.transform.GetChild(0).GetComponent<CompositeCollider2D>().bounds;
 		GetRoomTiles();
 
 		if (!exampleTest)

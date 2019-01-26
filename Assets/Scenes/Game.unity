@@ -557,10 +557,10 @@ MonoBehaviour:
   m_RefResolutionX: 256
   m_RefResolutionY: 160
   m_UpscaleRT: 0
-  m_PixelSnapping: 0
+  m_PixelSnapping: 1
   m_CropFrameX: 1
   m_CropFrameY: 1
-  m_StretchFill: 0
+  m_StretchFill: 1
 --- !u!1 &589065100
 GameObject:
   m_ObjectHideFlags: 0
@@ -722,6 +722,12 @@ MonoBehaviour:
   maxHealth: 100
   health: 100
   jumpBack: 0
+  gunDistance: 0.6
+  gunDamage: 5
+  gunFired: 0
+  gunBulletSpeed: 15
+  gunAmmoMax: 3
+  gunAmmo: 0
 --- !u!70 &1310797328
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -736,7 +742,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.875, y: 1.5}
+  m_Size: {x: 0.68, y: 1.25}
   m_Direction: 0
 --- !u!50 &1310797329
 Rigidbody2D:
@@ -1342,9 +1348,6 @@ MonoBehaviour:
   dead: 0
   VCamPlayer: {fileID: 2082480396}
   room: {fileID: 0}
-  roomBound:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
   playerContact:
     useTriggers: 0
     useLayerMask: 0
@@ -1366,6 +1369,15 @@ MonoBehaviour:
   gameOverPanel: {fileID: 1732689826}
   winPanel: {fileID: 424993126}
   lastY: -5.5
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &1845539504
 GameObject:
   m_ObjectHideFlags: 0

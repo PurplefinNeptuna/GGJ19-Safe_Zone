@@ -48,12 +48,14 @@ public class Enemy : PhysicsObject {
 	}
 
 	protected override void POFixedUpdate() {
-		int count = rb2d.OverlapCollider(GameScript.main.playerContact, overlapPlayer);
-		if (count > 0) {
-			OnHitPlayer(targetPlayer);
-			Player player = targetPlayer.GetComponent<Player>();
-			Vector2 dir = player.GetPosition() - rb2d.position;
-			player.GetHit(dir, damage, false, attackPower);
+		if (!GameScript.main.dead) {
+			int count = rb2d.OverlapCollider(GameScript.main.playerContact, overlapPlayer);
+			if (count > 0) {
+				OnHitPlayer(targetPlayer);
+				Player player = targetPlayer.GetComponent<Player>();
+				Vector2 dir = player.GetPosition() - rb2d.position;
+				player.GetHit(dir, damage, false, attackPower);
+			}
 		}
 	}
 
@@ -61,10 +63,17 @@ public class Enemy : PhysicsObject {
 		if (health <= 0 && !immortal) {
 			Destroy(gameObject);
 		}
-		AI();
+		if (!GameScript.main.dead)
+			AI();
+
 		bool flipSprite = (spriteRenderer.flipX ? (velocity.x > 0.01f) : (velocity.x < -0.01f));
 		if (flipSprite)
 			spriteRenderer.flipX = !spriteRenderer.flipX;
+	}
+
+	public void GetHit(int damage) {
+		if (!immortal)
+			health -= damage;
 	}
 
 	public virtual void AI() {
@@ -75,4 +84,5 @@ public class Enemy : PhysicsObject {
 
 	public virtual void OnHitPlayer(GameObject player) {
 	}
+
 }
