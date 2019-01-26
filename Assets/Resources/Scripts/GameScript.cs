@@ -9,7 +9,6 @@ using Cinemachine;
 
 public class GameScript : MonoBehaviour {
 	public static GameScript main;
-	public bool exampleTest;
 	public GameObject player;
 	public bool dead = false;
 	public GameObject VCamPlayer;
@@ -22,7 +21,7 @@ public class GameScript : MonoBehaviour {
 	public Text scoreText;
 	public GameObject gameOverPanel;
 	public GameObject winPanel;
-	public float lastY = -5.5f;
+	//public float lastY = -5.5f;
 	public LayerMask playerLayer;
 	public LayerMask enemyLayer;
 	public LayerMask groundLayer;
@@ -54,16 +53,13 @@ public class GameScript : MonoBehaviour {
 	}
 
 	public void LoadRoom() {
-		if (!exampleTest) {
-			room = Instantiate<GameObject>(RoomManager.main.activeRoomData.Room, Vector3.zero, Quaternion.identity);
-			room.name = RoomManager.main.activeRoomData.name;
-		}
+		room = Instantiate<GameObject>(RoomManager.main.activeRoomData.Room, Vector3.zero, Quaternion.identity);
+		room.name = RoomManager.main.activeRoomData.name;
 
 		grid = room.GetComponentInChildren<Grid>();
 		GetRoomTiles();
 
-		if (!exampleTest)
-			SpawnPlayer();
+		SpawnPlayer();
 
 		SetCamera();
 	}
@@ -109,7 +105,8 @@ public class GameScript : MonoBehaviour {
 		if (spawnTile == null)
 			return;
 
-		player.GetComponent<Player>().SetPosition(new Vector2(spawnTile.worldLocation.x, lastY));
+		//player.GetComponent<Player>().SetPosition(new Vector2(spawnTile.worldLocation.x, lastY));
+		player.GetComponent<Player>().SetPosition(spawnTile.worldLocation);
 	}
 
 	private void SetCamera() {

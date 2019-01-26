@@ -10,13 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bb6b72bc669f0a143aaad048b340f35e, type: 3}
-  m_Name: Room1
+  m_Name: Ex0
   m_EditorClassIdentifier: 
-  Room: {fileID: 1088325642943870974, guid: 1c38f1164cb328c4e8ccab1096fe556e, type: 3}
+  Room: {fileID: 1088325642943870974, guid: 772cde1d2469c6b4d97b0d3764403fe4, type: 3}
   teleporters:
   - teleporter: I0
-    targetRoom: Room0
-    targetTeleporter: O0
-  - teleporter: I1
-    targetRoom: Room2
+    targetRoom: Ex1
     targetTeleporter: O0

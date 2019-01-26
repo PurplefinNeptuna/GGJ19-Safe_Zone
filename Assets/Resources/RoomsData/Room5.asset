@@ -13,4 +13,19 @@ MonoBehaviour:
   m_Name: Room5
   m_EditorClassIdentifier: 
   Room: {fileID: 1088325642943870974, guid: c5600aeb7cfac6a46985a8c28bb86285, type: 3}
-  teleporters: []
+  teleporters:
+  - teleporter: I0
+    targetRoom: Room4
+    targetTeleporter: O3
+  - teleporter: I1
+    targetRoom: Room6
+    targetTeleporter: O0
+  - teleporter: I2
+    targetRoom: Room9
+    targetTeleporter: O0
+  - teleporter: I3
+    targetRoom: Room9
+    targetTeleporter: O1
+  - teleporter: I4
+    targetRoom: Room9
+    targetTeleporter: O2

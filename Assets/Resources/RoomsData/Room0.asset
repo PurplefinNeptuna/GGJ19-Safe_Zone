@@ -17,3 +17,12 @@ MonoBehaviour:
   - teleporter: I0
     targetRoom: Room1
     targetTeleporter: O0
+  - teleporter: I1
+    targetRoom: Room4
+    targetTeleporter: O0
+  - teleporter: I2
+    targetRoom: Room4
+    targetTeleporter: O1
+  - teleporter: I3
+    targetRoom: Room4
+    targetTeleporter: O2

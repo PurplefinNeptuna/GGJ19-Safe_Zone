@@ -143,7 +143,7 @@ public class Player : PhysicsObject {
 		WorldTile teleporter = GameScript.main.teleporter.SingleOrDefault(x => x.localPlace == pos);
 		if (teleporter != null) {
 			if (teleporter.name[0] == 'I') {
-				GameScript.main.lastY = rb2d.position.y;
+				//GameScript.main.lastY = rb2d.position.y;
 				GameScript.main.Teleport(teleporter);
 			}
 		}

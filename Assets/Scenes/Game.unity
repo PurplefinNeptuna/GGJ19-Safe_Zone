@@ -605,9 +605,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rooms: []
-  activeRoomName: Room0
+  activeRoomName: Room5
   activeRoomData: {fileID: 0}
-  spawnFrom: O0
+  spawnFrom: O3
 --- !u!1 &1310797324
 GameObject:
   m_ObjectHideFlags: 0
@@ -1343,7 +1343,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 348a508391211e34ea71fa70e8d40246, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  exampleTest: 0
   player: {fileID: 1310797324}
   dead: 0
   VCamPlayer: {fileID: 2082480396}
@@ -1368,7 +1367,6 @@ MonoBehaviour:
   scoreText: {fileID: 1437651463}
   gameOverPanel: {fileID: 1732689826}
   winPanel: {fileID: 424993126}
-  lastY: -5.5
   playerLayer:
     serializedVersion: 2
     m_Bits: 0
