@@ -5,6 +5,7 @@
 #User Specific
 *.userprefs
 *.usertasks
+*.zip
 
 #Mono Project Files
 *.pidb
