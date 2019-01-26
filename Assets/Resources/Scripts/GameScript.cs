@@ -14,6 +14,7 @@ public class GameScript : MonoBehaviour {
 	public bool dead = false;
 	public GameObject VCamPlayer;
 	public GameObject room;
+	public Bounds roomBound;
 	public ContactFilter2D playerContact;
 	public Grid grid;
 	public Dictionary<Vector3Int, WorldTile> tiles;
@@ -22,6 +23,7 @@ public class GameScript : MonoBehaviour {
 	public Text scoreText;
 	public GameObject gameOverPanel;
 	public GameObject winPanel;
+	public float lastY = -5.5f;
 
 	private void Awake() {
 		if (main == null) {
@@ -31,10 +33,10 @@ public class GameScript : MonoBehaviour {
 			Destroy(gameObject);
 		}
 
-		LoadRoom();
 	}
 
 	private void Start() {
+		LoadRoom();
 		playerContact.useTriggers = false;
 		playerContact.SetLayerMask(LayerMask.GetMask("Player"));
 	}
@@ -48,10 +50,13 @@ public class GameScript : MonoBehaviour {
 	}
 
 	public void LoadRoom() {
-		if (!exampleTest)
+		if (!exampleTest) {
 			room = Instantiate<GameObject>(RoomManager.main.activeRoomData.Room, Vector3.zero, Quaternion.identity);
+			room.name = RoomManager.main.activeRoomData.name;
+		}
 
 		grid = room.GetComponentInChildren<Grid>();
+		roomBound = room.transform.GetChild(0).GetComponent<CompositeCollider2D>().bounds;
 		GetRoomTiles();
 
 		if (!exampleTest)
@@ -101,7 +106,7 @@ public class GameScript : MonoBehaviour {
 		if (spawnTile == null)
 			return;
 
-		player.transform.position = spawnTile.worldLocation;
+		player.GetComponent<Player>().SetPosition(new Vector2(spawnTile.worldLocation.x, lastY));
 	}
 
 	private void SetCamera() {
@@ -117,5 +122,21 @@ public class GameScript : MonoBehaviour {
 	public void Win() {
 		winPanel.SetActive(true);
 		dead = true;
+	}
+
+	public void Teleport(WorldTile source) {
+		if (source.roomTarget == room.name) {
+			WorldTile target = teleporter.SingleOrDefault(x => x.name == source.teleportTarget);
+			if (target != null) {
+				player.GetComponent<Player>().SetPosition(target.worldLocation);
+			}
+		}
+		else {
+			RoomManager.main.activeRoomName = source.roomTarget;
+			RoomManager.main.spawnFrom = source.teleportTarget;
+			RoomManager.main.LoadRoomData();
+			Destroy(room);
+			LoadRoom();
+		}
 	}
 }

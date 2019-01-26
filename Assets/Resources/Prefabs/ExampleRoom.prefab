@@ -1030,6 +1030,7 @@ GameObject:
   - component: {fileID: 4678772143112121515}
   - component: {fileID: 4678772143112121517}
   - component: {fileID: 4678772143112121514}
+  - component: {fileID: 1577654279825630259}
   m_Layer: 0
   m_Name: Teleporter
   m_TagString: Untagged
@@ -1133,6 +1134,20 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
+--- !u!19719996 &1577654279825630259
+TilemapCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4678772143112121512}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
 --- !u!1 &4678772143286363945
 GameObject:
   m_ObjectHideFlags: 0

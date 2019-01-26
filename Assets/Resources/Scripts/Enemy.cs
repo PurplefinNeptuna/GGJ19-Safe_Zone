@@ -52,7 +52,7 @@ public class Enemy : PhysicsObject {
 		if (count > 0) {
 			OnHitPlayer(targetPlayer);
 			Player player = targetPlayer.GetComponent<Player>();
-			Vector2 dir = targetPlayer.transform.position - transform.position;
+			Vector2 dir = player.GetPosition() - rb2d.position;
 			player.GetHit(dir, damage, false, attackPower);
 		}
 	}

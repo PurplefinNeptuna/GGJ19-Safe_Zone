@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -110,5 +111,23 @@ public class Player : PhysicsObject {
 	public void Dead() {
 		GameScript.main.GameOver();
 		Destroy(gameObject);
+	}
+	private void OnTriggerStay2D(Collider2D collision) {
+		Vector3Int pos = GameScript.main.grid.WorldToCell(rb2d.position);
+		WorldTile teleporter = GameScript.main.teleporter.SingleOrDefault(x => x.localPlace == pos);
+		if (teleporter != null) {
+			if (teleporter.name[0] == 'I') {
+				GameScript.main.lastY = rb2d.position.y;
+				GameScript.main.Teleport(teleporter);
+			}
+		}
+	}
+
+	public void SetPosition(Vector3 pos) {
+		rb2d.position = pos;
+	}
+
+	public Vector2 GetPosition() {
+		return rb2d.position;
 	}
 }
