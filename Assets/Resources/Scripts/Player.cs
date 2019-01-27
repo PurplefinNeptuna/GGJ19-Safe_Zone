@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Player : PhysicsObject {
 
+	public bool godMode = false;
 	public float maxSpeed = 6f;
 	public float jumpTakeOffSpd = 13f;
 	public float knockBackXSpeed = .5f;
@@ -25,12 +26,8 @@ public class Player : PhysicsObject {
 
 	private SpriteRenderer spriteRenderer;
 
+	public bool canShoot = false;
 	public float gunDistance = .6f;
-	public Vector2 GunPoint {
-		get {
-			return (spriteRenderer.flipX ? Vector2.left : Vector2.right) * gunDistance;
-		}
-	}
 	public Vector2 GunDirection {
 		get {
 			return spriteRenderer.flipX ? Vector2.left : Vector2.right;
@@ -38,9 +35,10 @@ public class Player : PhysicsObject {
 	}
 	public int gunDamage = 5;
 	public bool gunFired = false;
-	public float gunBulletSpeed = 15f;
-	public int gunAmmoMax = 3;
+	public float gunBulletSpeed = 10f;
+	public int gunAmmoMax = 2;
 	public int gunAmmo = 0;
+	public int gunLevel = 0;
 
 	private void Awake() {
 		spriteRenderer = GetComponent<SpriteRenderer>();
@@ -78,7 +76,7 @@ public class Player : PhysicsObject {
 			xMove = knockBackXSpeed * knockBackResistance * knockBackDirection;
 
 		if (Input.GetButtonDown("Jump") && grounded) {
-			velocity.y = jumpTakeOffSpd;
+			velocity.y = jumpTakeOffSpd + (godMode ? 5f : 0f);
 		}
 		else if (Input.GetButtonUp("Jump")) {
 			if (velocity.y > 0) {
@@ -86,20 +84,27 @@ public class Player : PhysicsObject {
 			}
 		}
 
-		if (Input.GetButtonDown("Fire1") && !gunFired && gunAmmo < gunAmmoMax) {
-			gunFired = true;
-			ProjectileManager.Spawn(rb2d.position + GunPoint, gunBulletSpeed, GunDirection, true, gameObject, gunDamage, "Bullet", "PlayerBullet");
-			gunAmmo++;
-		}
-		else if (Input.GetButtonUp("Fire1") && gunFired) {
-			gunFired = false;
+		float vertRaw = Input.GetAxisRaw("Vertical");
+		Vector2 finalGunDirection = (Mathf.Abs(vertRaw) > .5f) ? Vector2.up * Mathf.Sign(vertRaw) : GunDirection;
+
+		if (canShoot) {
+			if (Input.GetButtonDown("Fire1") && !gunFired && gunAmmo < gunAmmoMax + gunLevel) {
+				gunFired = true;
+				int bulletDamage = Random.Range(gunDamage - 2, gunDamage + 3) + gunLevel * 2;
+				bulletDamage *= (godMode ? 5 : 1);
+				ProjectileManager.Spawn(rb2d.position + finalGunDirection * gunDistance, gunBulletSpeed + (gunLevel * 5f), finalGunDirection, true, gameObject, bulletDamage, "Bullet", "PlayerBullet");
+				gunAmmo++;
+			}
+			else if (Input.GetButtonUp("Fire1") && gunFired) {
+				gunFired = false;
+			}
 		}
 
 		bool flipSprite = (spriteRenderer.flipX ? (xMove > 0.01f) : (xMove < -0.01f));
 		if (flipSprite && !inJumpBack)
 			spriteRenderer.flipX = !spriteRenderer.flipX;
 
-		velocity.x = xMove * maxSpeed;
+		velocity.x = xMove * (maxSpeed + (godMode ? 5f : 0f));
 
 		if (blinking) {
 			if (blinkRate > blinkRateMax / 2f) {
@@ -122,6 +127,8 @@ public class Player : PhysicsObject {
 	}
 
 	public void GetHit(Vector2 direction, int damage, bool ignoreInvincible = false, float knockbackMultiplier = 1f) {
+		if (godMode)
+			return;
 		if (!invincible || ignoreInvincible) {
 			health -= damage;
 			if (health < 0)
@@ -143,7 +150,6 @@ public class Player : PhysicsObject {
 		WorldTile teleporter = GameScript.main.teleporter.SingleOrDefault(x => x.localPlace == pos);
 		if (teleporter != null) {
 			if (teleporter.name[0] == 'I') {
-				//GameScript.main.lastY = rb2d.position.y;
 				GameScript.main.Teleport(teleporter);
 			}
 		}

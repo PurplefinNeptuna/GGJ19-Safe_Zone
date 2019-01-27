@@ -19,8 +19,8 @@ TagManager:
   - Projectile
   - EnemyProjectile
   - Teleporter
-  - 
-  - 
+  - Pickup
+  - EnemyMimic
   - 
   - 
   - 
@@ -44,15 +44,24 @@ TagManager:
   - name: bg
     uniqueID: 2094657157
     locked: 0
+  - name: Dome
+    uniqueID: 700817369
+    locked: 0
   - name: ground
     uniqueID: 1377537607
     locked: 0
   - name: player
     uniqueID: 118153797
     locked: 0
+  - name: pickup
+    uniqueID: 656973639
+    locked: 0
   - name: enemy
     uniqueID: 3408181313
     locked: 0
   - name: projectile
     uniqueID: 1459795389
+    locked: 0
+  - name: ui
+    uniqueID: 4086322115
     locked: 0

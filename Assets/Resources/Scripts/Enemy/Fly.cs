@@ -5,7 +5,7 @@ using UnityEngine;
 public class Fly : Enemy {
 
 	private float attackDelayMax = 2f;
-	private float attackDelay = 2f;
+	private float attackDelay;
 	private float attackTimeMax = .5f;
 	private float attackTime = .5f;
 	private bool chasing = false;
@@ -14,7 +14,9 @@ public class Fly : Enemy {
 	private float atkSpeed = 10f;
 
 	public override void SetDefault() {
+		attackDelay = Random.Range(attackDelayMax - 1f, attackDelayMax + 1f);
 		affectedByGravity = false;
+		noContactDamage = false;
 		velocity = Vector2.zero;
 		attackPower = 1f;
 		damage = 10;
@@ -33,10 +35,10 @@ public class Fly : Enemy {
 		if (chasing && !attacking) {
 			attackDelay -= Time.deltaTime;
 			if (attackDelay <= 0f) {
-				attackDelay = attackDelayMax;
+				attackDelay = Random.Range(attackDelayMax - 1f, attackDelayMax + 1f);
 				attacking = true;
 				attackTime = attackTimeMax;
-				Speed = atkSpeed;
+				Speed = Random.Range(atkSpeed - 3f, atkSpeed + 3f);
 				Direction = playerDir.normalized;
 			}
 		}

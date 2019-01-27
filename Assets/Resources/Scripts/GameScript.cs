@@ -10,9 +10,11 @@ using Cinemachine;
 public class GameScript : MonoBehaviour {
 	public static GameScript main;
 	public GameObject player;
+	public int score = 0;
 	public bool dead = false;
 	public GameObject VCamPlayer;
 	public GameObject room;
+	public GameObject healthDrop;
 	public ContactFilter2D playerContact;
 	public Grid grid;
 	public Dictionary<Vector3Int, WorldTile> tiles;
@@ -21,7 +23,6 @@ public class GameScript : MonoBehaviour {
 	public Text scoreText;
 	public GameObject gameOverPanel;
 	public GameObject winPanel;
-	//public float lastY = -5.5f;
 	public LayerMask playerLayer;
 	public LayerMask enemyLayer;
 	public LayerMask groundLayer;
@@ -38,7 +39,7 @@ public class GameScript : MonoBehaviour {
 	private void Start() {
 		LoadRoom();
 		playerLayer = LayerMask.GetMask("Player");
-		enemyLayer = LayerMask.GetMask("Enemy");
+		enemyLayer = LayerMask.GetMask("Enemy", "EnemyMimic");
 		groundLayer = LayerMask.GetMask("Ground");
 		playerContact.useTriggers = false;
 		playerContact.SetLayerMask(playerLayer);
@@ -105,7 +106,6 @@ public class GameScript : MonoBehaviour {
 		if (spawnTile == null)
 			return;
 
-		//player.GetComponent<Player>().SetPosition(new Vector2(spawnTile.worldLocation.x, lastY));
 		player.GetComponent<Player>().SetPosition(spawnTile.worldLocation);
 	}
 
@@ -120,6 +120,7 @@ public class GameScript : MonoBehaviour {
 	}
 
 	public void Win() {
+		scoreText.text = "score: " + score;
 		winPanel.SetActive(true);
 		dead = true;
 	}

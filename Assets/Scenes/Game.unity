@@ -663,7 +663,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 118153797
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a874b4dec9b4ccc4db83a15f6041ce80, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -710,6 +710,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   velocity: {x: 0, y: 0}
+  godMode: 0
   maxSpeed: 6
   jumpTakeOffSpd: 13
   knockBackXSpeed: 0.5
@@ -722,12 +723,14 @@ MonoBehaviour:
   maxHealth: 100
   health: 100
   jumpBack: 0
+  canShoot: 0
   gunDistance: 0.6
   gunDamage: 5
   gunFired: 0
-  gunBulletSpeed: 15
-  gunAmmoMax: 3
+  gunBulletSpeed: 10
+  gunAmmoMax: 2
   gunAmmo: 0
+  gunLevel: 0
 --- !u!70 &1310797328
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -823,7 +826,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 0e8c78f701f298c4087e5859e0b3961d, type: 3}
+    m_Font: {fileID: 12800000, guid: 8409f90f6b14f4948925b8b368b53d52, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
@@ -904,7 +907,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 0e8c78f701f298c4087e5859e0b3961d, type: 3}
+    m_Font: {fileID: 12800000, guid: 8409f90f6b14f4948925b8b368b53d52, type: 3}
     m_FontSize: 70
     m_FontStyle: 1
     m_BestFit: 0
@@ -983,7 +986,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 0e8c78f701f298c4087e5859e0b3961d, type: 3}
+    m_Font: {fileID: 12800000, guid: 8409f90f6b14f4948925b8b368b53d52, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
@@ -1137,7 +1140,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 0e8c78f701f298c4087e5859e0b3961d, type: 3}
+    m_Font: {fileID: 12800000, guid: 8409f90f6b14f4948925b8b368b53d52, type: 3}
     m_FontSize: 70
     m_FontStyle: 1
     m_BestFit: 0
@@ -1344,9 +1347,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1310797324}
+  score: 0
   dead: 0
   VCamPlayer: {fileID: 2082480396}
   room: {fileID: 0}
+  healthDrop: {fileID: 614915745932099785, guid: 3e5030881e6d1d24cb78617d18b0a73a,
+    type: 3}
   playerContact:
     useTriggers: 0
     useLayerMask: 0
@@ -1434,8 +1440,8 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 0e8c78f701f298c4087e5859e0b3961d, type: 3}
-    m_FontSize: 30
+    m_Font: {fileID: 12800000, guid: 8409f90f6b14f4948925b8b368b53d52, type: 3}
+    m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -1515,12 +1521,12 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 0e8c78f701f298c4087e5859e0b3961d, type: 3}
+    m_Font: {fileID: 12800000, guid: 8409f90f6b14f4948925b8b368b53d52, type: 3}
     m_FontSize: 30
     m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 2
-    m_MaxSize: 40
+    m_MinSize: 0
+    m_MaxSize: 300
     m_Alignment: 4
     m_AlignByGeometry: 1
     m_RichText: 1

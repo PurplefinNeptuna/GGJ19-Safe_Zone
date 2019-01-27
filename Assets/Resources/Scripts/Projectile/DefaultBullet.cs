@@ -14,7 +14,7 @@ public class DefaultBullet : Projectile {
 	}
 
 	public override void OnHitEnemy(GameObject target) {
-		target.GetComponent<Enemy>().GetHit(damage);
+		target.GetComponent<Enemy>().GetHit(damage, Source.GetComponent<Player>());
 		Destroy(gameObject);
 	}
 

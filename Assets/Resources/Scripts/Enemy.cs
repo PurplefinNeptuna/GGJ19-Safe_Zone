@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : PhysicsObject {
-
 	public GameObject targetPlayer;
 	public float defaultSpeed;
 	public float attackPower;
-	public int health = 15;
+	public int health;
 	public bool immortal;
 	public int damage;
+	public bool dropHeart;
+	public bool noContactDamage;
+	public int score;
+	protected bool useCustomHit;
 
 	public float Speed {
 		get {
@@ -48,7 +51,7 @@ public class Enemy : PhysicsObject {
 	}
 
 	protected override void POFixedUpdate() {
-		if (!GameScript.main.dead) {
+		if (!GameScript.main.dead && !noContactDamage) {
 			int count = rb2d.OverlapCollider(GameScript.main.playerContact, overlapPlayer);
 			if (count > 0) {
 				OnHitPlayer(targetPlayer);
@@ -71,9 +74,13 @@ public class Enemy : PhysicsObject {
 			spriteRenderer.flipX = !spriteRenderer.flipX;
 	}
 
-	public void GetHit(int damage) {
-		if (!immortal)
-			health -= damage;
+	public void GetHit(int damage, Player source) {
+		if (!immortal) {
+			if (useCustomHit)
+				CustomGetHit(damage, source);
+			else
+				health -= damage;
+		}
 	}
 
 	public virtual void AI() {
@@ -85,4 +92,18 @@ public class Enemy : PhysicsObject {
 	public virtual void OnHitPlayer(GameObject player) {
 	}
 
+	public virtual void CustomGetHit(int damage, Player source) {
+	}
+
+	private void OnDestroy() {
+		if (health <= 0) {
+			if (dropHeart) {
+				float chance = Random.Range(0f, 1f);
+				if (chance * 3 <= 1f) {
+					Instantiate<GameObject>(GameScript.main.healthDrop, rb2d.position, Quaternion.identity);
+				}
+			}
+			GameScript.main.score += score;
+		}
+	}
 }

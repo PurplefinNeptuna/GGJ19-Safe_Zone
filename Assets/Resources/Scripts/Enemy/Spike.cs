@@ -9,5 +9,6 @@ public class Spike : Enemy {
 		attackPower = 2f;
 		damage = 15;
 		immortal = true;
+		noContactDamage = false;
 	}
 }
